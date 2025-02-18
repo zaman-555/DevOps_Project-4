@@ -18,4 +18,4 @@ sudo apt install net-tools
 
 ## Network Namespace Diagram
 
-! [This diagram represents a network namespace setup, likely using Linux containers or similar virtualization technologies. Let's break down the components and their relationships] (images/diagram_1.png)
+! [Diagram](images/diagram_1.png)
