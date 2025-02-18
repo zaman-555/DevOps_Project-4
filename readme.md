@@ -18,4 +18,4 @@ sudo apt install net-tools
 
 ## Network Namespace Diagram
 
-! [Diagram](images/diagram_1.png)
+![Diagram](./images/diagram_1.png)
