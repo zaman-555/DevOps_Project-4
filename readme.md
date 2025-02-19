@@ -100,20 +100,46 @@ ip netns list
 ## Connect virtual Ethernet pairs with bridge and namespace
 
 ```bash
-ip link set veth-ns1 netns ns1
-ip link set veth-ns2 netns ns2
-ip link set veth-rns1 netns router-ns
-ip link set veth-rns2 netns router-ns
-ip link set veth-br0 master br0
-ip link set veth-br1 master br1
-ip link set veth-br0-rns1 master br0
-ip link set veth-br1-rns2 master br1
+ip link set dev veth-ns1 netns ns1
+ip link set dev veth-ns2 netns ns2
+ip link set dev veth-rns1 netns router-ns
+ip link set dev veth-rns2 netns router-ns
+ip link set dev veth-br0 master br0
+ip link set dev veth-br1 master br1
+ip link set dev veth-br0-rns1 master br0
+ip link set dev veth-br1-rns2 master br1
 
 ```
-So far we run all the commands on root namespace, from root name if we run 
+So far we run all the commands on root namespace, from root namespace if we run 
 
 ```bash
 ip netns list
 
 ```
-we can see br0 br1, and veth interface.
+## Set the Bridge interface up
+
+we can see br0, br1 and veth interface. Let's turn on veth interface which
+are connected with br0 and br1.
+
+```bash
+ip link set dev veth-br0 up
+ip link set dev veth-br1 up
+ip link set dev veth-br0-rns1 up
+ip link set dev veth-br1-rns2 up
+
+```
+
+Now run,
+
+```bash
+ip link show
+
+```
+It will show all the interface are currentlly UP state.
+
+## Set the namespace interfaces up
+
+```bash
+ip link show
+
+```
