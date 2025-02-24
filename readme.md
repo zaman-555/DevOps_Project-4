@@ -50,11 +50,29 @@ After creating the br0 and br1 let's check if it's create or not
 ip link list
 
 ```
+
+
+## Assign an Ip address to the bridges interface br0 and br1
+
+```bash
+ip address add 10.11.0.5/24 dev br0
+ip address add 10.11.0.6/24 dev br1
+
+```
+run 
+
+```bash
+ip address add show dev br0
+ip address add show dev br1
+
+```
+
+
 When i created a network interface, it's not automatically active. It exists in the system's configuration, but it's in "down" state. I need to explicitily bring it "up" to make it functional.
 
 ```bash
-ip link set br0 up
-ip link set br1 up
+ip link set dev br0 up
+ip link set dev br1 up
 
 ```
 Let's check again if it now functional.
