@@ -52,3 +52,17 @@ ip link set veth-br1 master br1
 ip link set veth-ns2 netns ns2
 ip netns exec ns2 ip link addr add 10.12.0.2/16 dev veth-ns2
 ip netns exec ns2 ip link set veth-ns1 up
+
+
+sysctl -w net.ipv4.ip_forward=1 &> /dev/null
+
+iptables --append FORWARD --in-interface br0 --jump ACCEPT
+iptables --append FORWARD --out-interface br0 --jump ACCEPT
+
+iptables --append FORWARD --in-interface br1 --jump ACCEPT
+iptables --append FORWARD --out-interface br1 --jump ACCEPT
+
+ip netns exec ns1 ip route add default via 10.11.0.3
+ip netns exec ns2 ip route add default via 10.12.0.3
+
+ip netns exec router-ns sysctl -w net.ipv4.ip_forward=1 &> /dev/null
