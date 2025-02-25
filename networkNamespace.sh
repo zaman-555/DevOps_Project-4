@@ -23,7 +23,7 @@ ip link add veth-ns1 type veth peer name veth-br0
 ip link set veth-br0 up 
 ip link set veth-br0 master br0
 ip link set veth-ns1 netns ns1
-ip netns exec ns1 ip link addr add 10.11.0.2/16 dev veth-ns1
+ip netns exec ns1 ip addr add 10.11.0.2/16 dev veth-ns1
 ip netns exec ns1 ip link set veth-ns1 up
 
 # Peer B
@@ -32,7 +32,7 @@ ip link add veth-br0-rns1 type veth peer name veth-rns1
 ip link set veth-br0-rns1 up 
 ip link set veth-br0-rns1 master br0
 ip link set veth-rns1 netns router-ns
-ip netns exec router-ns ip link addr add 10.11.0.3/16 dev veth-rns1
+ip netns exec router-ns ip addr add 10.11.0.3/16 dev veth-rns1
 ip netns exec router-ns ip link set veth-rns1 up
 
 # Peer C
@@ -41,7 +41,7 @@ ip link add veth-rns2 type veth peer name veth-br1-rns2
 ip link set veth-br1-rns2 up 
 ip link set veth-br1-rns2 master br1
 ip link set veth-rns2 netns router-ns
-ip netns exec router-ns ip link addr add 10.12.0.3/16 dev veth-rns2
+ip netns exec router-ns ip addr add 10.12.0.3/16 dev veth-rns2
 ip netns exec router-ns ip link set veth-rns2 up
 
 # Peer D
@@ -50,8 +50,8 @@ ip link add veth-ns2 type veth peer name veth-br1
 ip link set veth-br1 up 
 ip link set veth-br1 master br1
 ip link set veth-ns2 netns ns2
-ip netns exec ns2 ip link addr add 10.12.0.2/16 dev veth-ns2
-ip netns exec ns2 ip link set veth-ns1 up
+ip netns exec ns2 ip addr add 10.12.0.2/16 dev veth-ns2
+ip netns exec ns2 ip link set veth-ns2 up
 
 
 sysctl -w net.ipv4.ip_forward=1 &> /dev/null
