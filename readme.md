@@ -183,10 +183,14 @@ ip netns exec ns2 ip addr add 10.12.0.2/16 dev veth-ns2
 ip netns exec ns2 ip link set veth-ns2 up
 ```
 
+`sysctl -w net.ipv4.ip_forward=1` : This is the core of the command.  `sysctl` is a command-line utility for examining and modifying kernel parameters.  `-w` tells `sysctl` to write a new value.  `net.ipv4.ip_forward=1` sets the kernel parameter responsible for IP forwarding to 1.  This enables IP forwarding, meaning the system will act as a router and forward packets between network interfaces. `/dev/null` This is a special file that discards anything written to it. It's effectively a black hole for output.
+
+
 
 ```bash
 sysctl -w net.ipv4.ip_forward=1 &> /dev/null
 ```
+This command allows packets entering the system through the br0, br1 interface to be forwarded.
 
 ```bash
 iptables --append FORWARD --in-interface br0 --jump ACCEPT
@@ -197,6 +201,8 @@ iptables --append FORWARD --out-interface br0 --jump ACCEPT
 iptables --append FORWARD --in-interface br1 --jump ACCEPT
 iptables --append FORWARD --out-interface br1 --jump ACCEPT
 ```
+
+These commands configure the routing for two different network namespaces, ns1 and ns2.  Each namespace has its own isolated routing table, and these commands set the default gateway for each namespace to a different IP address. This allows each namespace to have its own independent network configuration and potentially connect to different networks or use different routers.
 
 ```bash
 ip netns exec ns1 ip route add default via 10.11.0.3
