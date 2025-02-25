@@ -39,9 +39,8 @@ sudo su -
 make sure my possword is correct.
 
 ```bash
-ip link add dev br0 type bridge
-ip link add dev br1 type bridge
-
+ip link add br0 type bridge
+ip link add br1 type bridge
 ```
 
 After creating the br0 and br1 let's check if it's create or not
@@ -55,8 +54,8 @@ ip link list
 ## Assign an Ip address to the bridges interface br0 and br1
 
 ```bash
-ip address add 10.11.0.5/24 dev br0
-ip address add 10.11.0.6/24 dev br1
+ip addr add 10.11.0.1/16 dev br0
+ip addr add 10.12.0.1/16 dev br1
 
 ```
 run 
@@ -71,8 +70,8 @@ ip address add show dev br1
 When i created a network interface, it's not automatically active. It exists in the system's configuration, but it's in "down" state. I need to explicitily bring it "up" to make it functional.
 
 ```bash
-ip link set dev br0 up
-ip link set dev br1 up
+ip link set br0 up
+ip link set br1 up
 
 ```
 Let's check again if it now functional.
@@ -115,49 +114,40 @@ ip netns list
 
 ```
 
-## Connect virtual Ethernet pairs with bridge and namespace
+## Connect virtual Ethernet pair with bridge and namespace
 
-```bash
-ip link set dev veth-ns1 netns ns1
-ip link set dev veth-ns2 netns ns2
-ip link set dev veth-rns1 netns router-ns
-ip link set dev veth-rns2 netns router-ns
-ip link set dev veth-br0 master br0
-ip link set dev veth-br1 master br1
-ip link set dev veth-br0-rns1 master br0
-ip link set dev veth-br1-rns2 master br1
-
-```
-So far we run all the commands on root namespace, from root namespace if we run 
-
-```bash
-ip netns list
-
-```
 ## Set the Bridge interface up
 
-we can see br0, br1 and veth interface. Let's turn on veth interface which
-are connected with br0 and br1.
+we can see interface veth-br0, let's turn on veth-br0 interface which
+is connected with br0 bridge.
 
 ```bash
-ip link set dev veth-br0 up
-ip link set dev veth-br1 up
-ip link set dev veth-br0-rns1 up
-ip link set dev veth-br1-rns2 up
+ip link set veth-br0 up 
 
 ```
-
-Now run,
+## Connect virtual Ethernet pair veth-br0 with br0 bridge
 
 ```bash
-ip link show
+ip link set veth-br0 master br0
 
 ```
 It will show all the interface are currentlly UP state.
 
-## Set the namespace interfaces up
+## Connect virtual Ethernet pair veth-ns1 with ns1 namespace
 
 ```bash
-ip link show
+ip link set veth-ns1 netns ns1
+
+```
+## Assign an Ip address to the ns1 namespace 
+
+```bash
+ip netns exec ns1 ip addr add 10.11.0.2/16 dev veth-ns1
+
+```
+Let's turn on veth-ns1 interface which is connected with ns1 bridge.
+
+```bash
+ip netns exec ns1 ip link set veth-ns1 up
 
 ```
