@@ -219,12 +219,12 @@ ip netns exec router-ns sysctl -w net.ipv4.ip_forward=1 &> /dev/null
 ## Test connectivity
 
 
-Let's ping from ns1 to veth-rns1 `ping 10.11.0.3 -c 3` and again ping from ns1 to veth-rns2 `ping 10.12.0.3 -c 3`
+Let's ping from ns1 to veth-rns1 `ping 10.11.0.3 -c 3` and ping from ns1 to veth-rns2 `ping 10.12.0.3 -c 3`
 
 ![Diagram](./images/image_5.png)
 
 
-Ping from router-ns to ns2 `ping 10.12.0.2 -c 3` and again ping from router-ns to ns1 `ping 10.11.0.2 -c 3`
+Ping from router-ns to ns2 `ping 10.12.0.2 -c 3` and ping from router-ns to ns1 `ping 10.11.0.2 -c 3`
 
 ![Diagram](./images/image_6.png)
 
