@@ -204,6 +204,9 @@ iptables --append FORWARD --out-interface br1 --jump ACCEPT
 
 These commands configure the routing for two different network namespaces, ns1 and ns2.  Each namespace has its own isolated routing table, and these commands set the default gateway for each namespace to a different IP address. This allows each namespace to have its own independent network configuration and potentially connect to different networks or use different routers.
 
+Imagine we have two virtual machines or containers running on a single host.  We want to isolate their network traffic.  We could create two network namespaces, ns1 and ns2, and assign each VM/container to a different namespace.  Then, we could use these commands to configure different default gateways for each namespace, allowing them to connect to different networks or use different routers.
+
+
 ```bash
 ip netns exec ns1 ip route add default via 10.11.0.3
 ip netns exec ns2 ip route add default via 10.12.0.3
@@ -212,3 +215,19 @@ ip netns exec ns2 ip route add default via 10.12.0.3
 ```bash
 ip netns exec router-ns sysctl -w net.ipv4.ip_forward=1 &> /dev/null
 ```
+
+## Test connectivity
+
+
+Let's ping from ns1 to veth-rns1 `ping 10.11.0.3 -c 3` and again ping from ns1 to veth-rns2 `ping 10.12.0.3 -c 3`
+
+![Diagram](./images/image_5.png)
+
+
+Ping from router-ns to ns2 `ping 10.12.0.2 -c 3` and again ping from router-ns to ns1 `ping 10.11.0.2 -c 3`
+
+![Diagram](./images/image_6.png)
+
+`arp -n` The ARP table shows how the system has learned the MAC addresses associated with different IP addresses on the local network.  When the computer wants to communicate with another device on the same local network, it needs to know the destination device's MAC address.  It uses ARP to discover this.
+
+![Diagram](./images/image_2.png)
